@@ -1,0 +1,24 @@
+name: test
+
+on: [ push ]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ['18.x', '20.x']
+        command: ['node ./request.mjs', 'npm run vitest']
+      fail-fast: false
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      -
+        name: Test
+        run: ${{ matrix.command }}
